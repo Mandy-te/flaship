@@ -3,7 +3,7 @@ export async function handler(event) {
   const { trackingNumber } = JSON.parse(event.body);
 
   // Mete Web App URL Google Sheets ou a isit la
-  const sheetUrl = "PASTE_YOUR_GOOGLE_SHEET_WEB_APP_URL_HERE";
+  const sheetUrl = "https://script.google.com/macros/s/AKfycbxOsEWaOtJnwVbEW3Li6mKyufenohw1_G862xAtWkBQ7q-30SY4LJurOjySA1B1F95e-g/exe";
 
   try {
     // Rele Google Sheets Web App
