@@ -1,2 +1,20 @@
 [build]
-  publish = "pages"
+  command = "npm run build"
+  publish = "dist" # si w ap itilize Vite
+  # si se CRA (create-react-app), mete "build" olye de "dist"
+  # publish = "build"
+
+[dev]
+  command = "npm run dev"
+  port = 8888
+  targetPort = 5173
+
+# Rewriting routes pou SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Netlify Functions
+[functions]
+  directory = "netlify/functions"
