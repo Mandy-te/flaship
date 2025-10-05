@@ -39,7 +39,7 @@ export default function Home() {
       >
         <h1 className="text-5xl font-bold mb-4">Flashipping 🚀</h1>
         <p className="text-lg mb-6">
-          Fasilite voye ak resevwa koli Etazini → Ayiti. Sèvis rapid, serye, ak pri klè.
+          Fasilite voye ak resevwa koli Etazini → Ayiti. Sèvis rapid, serye, ak pri chiklèt.
         </p>
         <div className="flex justify-center gap-4">
           <motion.a whileHover={{ scale: 1.1 }} href="/tracking" className="px-4 py-2 bg-blue-600 text-white rounded-lg">Tracking</motion.a>
