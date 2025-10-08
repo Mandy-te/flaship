@@ -1,8 +1,9 @@
 export default function Accueil() {
   return (
-    <section>
-      <h2 className="text-3xl font-semibold mb-4">Bienvenue sur Flashipping 🚀</h2>
-      <p>Découvrez nos services, tarifs et suivez vos colis en temps réel.</p>
-    </section>
+    <div className="text-center mt-10">
+      <h1 className="text-4xl font-bold text-blue-600">
+        Test Tailwind Fonctionne ✅
+      </h1>
+    </div>
   );
 }
