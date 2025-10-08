@@ -1,73 +1,81 @@
-import React, { useState } from "react";
-import logo from "/public/flashipping-logo.png";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import logo from "/public/flashipping-logo.png"; // adapte chemen an si nesesè
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed w-full top-0 left-0 bg-white/90 backdrop-blur-md shadow-md z-50">
-      <div className="flex items-center justify-between px-6 md:px-10 py-4">
-        {/* Logo */}
-        <div className="flex items-center space-x-3">
-          <img src={logo} alt="Flashipping logo" className="w-10 h-10" />
-          <h1 className="text-xl md:text-2xl font-bold text-blue-700">
-            FLASHIPPING
-          </h1>
+    <nav className="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
+        {/* LOGO + NAME */}
+        <div className="flex items-center space-x-2 md:space-x-3">
+          <img
+            src={logo}
+            alt="Flashipping Logo"
+            className="w-8 h-8 md:w-10 md:h-10 object-contain"
+          />
+          <span className="text-xl md:text-2xl font-bold text-blue-600">
+            Flashipping
+          </span>
         </div>
 
-        {/* Menu desktop */}
-        <nav className="hidden md:flex space-x-6 font-medium">
-          <a href="#accueil" className="hover:text-blue-600">Accueil</a>
-          <a href="#services" className="hover:text-blue-600">Services</a>
-          <a href="#tarifs" className="hover:text-blue-600">Tarifs</a>
-          <a href="#tracking" className="hover:text-blue-600">Suivi</a>
-          <a href="#contact" className="hover:text-blue-600">Contact</a>
-        </nav>
-
-        {/* Boutons desktop */}
-        <div className="hidden md:flex space-x-4">
-          <button className="border border-blue-700 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-700 hover:text-white transition">
-            Connexion
-          </button>
-          <button className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition">
-            Créer un compte
+        {/* MENU ICON MOBILE */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-700 hover:text-blue-600 transition"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Hamburger mobile */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden flex flex-col space-y-1"
+        {/* LINKS */}
+        <div
+          className={`${
+            isOpen ? "block" : "hidden"
+          } absolute top-full left-0 w-full bg-white md:static md:flex md:items-center md:space-x-6 md:w-auto`}
         >
-          <span className="w-6 h-0.5 bg-gray-800"></span>
-          <span className="w-6 h-0.5 bg-gray-800"></span>
-          <span className="w-6 h-0.5 bg-gray-800"></span>
-        </button>
-      </div>
+          <ul className="flex flex-col md:flex-row items-center md:space-x-6 py-3 md:py-0">
+            <li>
+              <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">
+                Accueil
+              </a>
+            </li>
+            <li>
+              <a href="#services" className="text-gray-700 hover:text-blue-600 font-medium">
+                Services
+              </a>
+            </li>
+            <li>
+              <a href="#tarifs" className="text-gray-700 hover:text-blue-600 font-medium">
+                Tarifs
+              </a>
+            </li>
+            <li>
+              <a href="#tracking" className="text-gray-700 hover:text-blue-600 font-medium">
+                Tracking
+              </a>
+            </li>
+          </ul>
 
-      {/* Menu mobile */}
-      {open && (
-        <div className="md:hidden bg-white border-t border-gray-200">
-          <nav className="flex flex-col p-4 space-y-3 text-center">
-            <a href="#accueil" onClick={() => setOpen(false)}>Accueil</a>
-            <a href="#services" onClick={() => setOpen(false)}>Services</a>
-            <a href="#tarifs" onClick={() => setOpen(false)}>Tarifs</a>
-            <a href="#tracking" onClick={() => setOpen(false)}>Suivi</a>
-            <a href="#contact" onClick={() => setOpen(false)}>Contact</a>
-
-            <div className="pt-3 border-t border-gray-200 space-y-2">
-              <button className="w-full border border-blue-700 text-blue-700 py-2 rounded-lg hover:bg-blue-700 hover:text-white transition">
-                Connexion
-              </button>
-              <button className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition">
-                Créer un compte
-              </button>
-            </div>
-          </nav>
+          {/* BUTTONS */}
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 px-4 md:px-0 pb-3 md:pb-0">
+            <a
+              href="/login"
+              className="text-blue-600 font-semibold hover:text-blue-800"
+            >
+              Connexion
+            </a>
+            <a
+              href="/signup"
+              className="bg-blue-600 text-white font-semibold px-4 py-2 rounded-full hover:bg-blue-700 transition"
+            >
+              S’inscrire
+            </a>
+          </div>
         </div>
-      )}
-    </header>
+      </div>
+    </nav>
   );
-};
-
-export default Navbar;
+}
