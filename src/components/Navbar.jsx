@@ -12,7 +12,7 @@ const Navbar = () => {
           <img
   src={logo}
   alt="Flashipping logo"
-  className="h-10 w-auto max-w-[120px] object-contain"
+  className="w-12 h-12 object-contain"
 />
           <h1 className="text-xl md:text-2xl font-bold text-blue-700">
             FLASHIPPING
