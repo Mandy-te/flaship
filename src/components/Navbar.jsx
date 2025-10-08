@@ -9,10 +9,10 @@ const Navbar = () => {
       <div className="flex items-center justify-between px-6 md:px-10 py-4">
         {/* Logo */}
         <div className="flex items-center space-x-3">
-          <img 
-  src={logo} 
-  alt="Flashipping logo" 
-  className="w-8 h-8 md:w-10 md:h-10 object-contain"
+          <img
+  src={logo}
+  alt="Flashipping logo"
+  className="h-10 w-auto max-w-[120px] object-contain"
 />
           <h1 className="text-xl md:text-2xl font-bold text-blue-700">
             FLASHIPPING
