@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import FloatingTrackButton from "./components/FloatingTrackButton";
 
 import Accueil from "./pages/Accueil";
 import Calculator from "./pages/Calculator";
@@ -32,7 +33,12 @@ export default function App() {
             />
           </Routes>
         </main>
+
+        {/* Footer */}
         <Footer />
+
+        {/* Floating tracking button */}
+        <FloatingTrackButton />
       </Router>
     </UserProvider>
   );
