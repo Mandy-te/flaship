@@ -44,7 +44,7 @@ export default function Calculator() {
   }, [poids, valeur, fragile]);
 
   return (
-    <section className="p-6 flex justify-center">
+    <section className="p-6 flex justify-center pt-20">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
         <h2 className="text-3xl font-bold mb-4 text-center text-blue-700">
           Calculateur de tarifs 📦
