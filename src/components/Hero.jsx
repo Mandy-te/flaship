@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-
+import { Link } from "react-router-dom";
 export default function Hero() {
   return (
     <section className="bg-gradient-to-b from-indigo-50 to-white py-24 px-6 md:px-16 text-center relative overflow-hidden">
@@ -28,9 +28,12 @@ export default function Hero() {
         transition={{ duration: 1 }}
         className="flex flex-col sm:flex-row items-center justify-center gap-4"
       >
-        <button className="px-8 py-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition">
-          Start Shipping Now
-        </button>
+              <Link
+        to="/sign-in"
+        className="bg-blue-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 hover:scale-105 transition-transform duration-300 inline-block"
+      >
+        Start Shipping
+      </Link>
         <button className="px-8 py-4 bg-gray-100 text-gray-800 rounded-xl font-semibold hover:bg-gray-200 transition">
           Learn More
         </button>
