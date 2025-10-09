@@ -8,7 +8,7 @@ const FinalCTA = () => {
       <p className="text-gray-300 mb-6">Rejoignez des centaines d’utilisateurs satisfaits dès aujourd’hui.</p>
       <Link
         to="/sign-in"
-        className="bg-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition inline-block"
+        className="bg-blue-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 hover:scale-105 transition-transform duration-300 inline-block"
       >
         Créer un compte
       </Link>
