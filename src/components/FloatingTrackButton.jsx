@@ -14,7 +14,7 @@ export default function FloatingTrackButton() {
   }, []);
 
   return (
-    <div className={`md:hidden fixed bottom-6 right-4 z-50 transition-all duration-500
+    <div className={`md:hidden fixed bottom-24 right-4 z-50 transition-all duration-500
       ${visible ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0"}`}>
       <Link
         to="/tracking"
