@@ -1,7 +1,7 @@
 export default function Dashboard() {
   return (
     <section>
-      <h2 className="text-3xl font-semibold mb-4">Tableau de bord 📊</h2>
+      <h2 className="text-3xl font-semibold mb-4 pt-20">Tableau de bord 📊</h2>
       <p>Bienvenue sur votre espace client. Ici, vous pouvez :</p>
       <ul className="list-disc ml-6 mt-4">
         <li>Suivre vos colis en temps réel</li>
