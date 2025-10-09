@@ -49,7 +49,7 @@ export default function Calculator() {
         <h2 className="text-3xl font-bold mb-4 text-center text-blue-700">
           Calculateur de tarifs 📦
         </h2>
-        <p className="text-gray-600 mb-6 text-center">
+        <p className="text-gray-600 mb-6 text-center pt-20">
           Estimez le coût de votre expédition selon le poids et la valeur du marchand.
         </p>
 
