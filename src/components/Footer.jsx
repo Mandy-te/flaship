@@ -51,7 +51,7 @@ const Footer = () => {
   } md:hidden`}
 >
   <a
-    href="https://wa.me/13050000000"
+    href="https://wa.me/50943314028"
     target="_blank"
     rel="noopener noreferrer"
     className="text-2xl text-white p-2 rounded-full hover:bg-green-500 hover:scale-110 transition-transform duration-300 shadow-md"
@@ -59,13 +59,13 @@ const Footer = () => {
     <FaWhatsapp />
   </a>
   <a
-    href="mailto:contact@flashipping.com"
+    href="mailto:flashipping123.com"
     className="text-2xl text-white p-2 rounded-full hover:bg-yellow-500 hover:scale-110 transition-transform duration-300 shadow-md"
   >
     <FaEnvelope />
   </a>
   <a
-    href="https://instagram.com/flashipping"
+    href="https://instagram.com/fla.shipping_15"
     target="_blank"
     rel="noopener noreferrer"
     className="text-2xl text-white p-2 rounded-full hover:bg-pink-500 hover:scale-110 transition-transform duration-300 shadow-md"
