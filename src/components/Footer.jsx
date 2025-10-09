@@ -46,29 +46,33 @@ const Footer = () => {
 
         {/* Mobile: sticky buttons */}
         <div
-          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4 bg-blue-800 px-4 py-2 rounded-full shadow-lg z-50 transition-all duration-500 ${
-            showButtons ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
-          } md:hidden`}
-        >
-          <a
-            href="https://wa.me/13050000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-2xl text-white"
-          >
-            <FaWhatsapp />
-          </a>
-          <a href="mailto:contact@flashipping.com" className="text-2xl text-white">
-            <FaEnvelope />
-          </a>
-          <a
-            href="https://instagram.com/flashipping"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-2xl text-white"
-          >
-            <FaInstagram />
-          </a>
+  className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4 bg-blue-800 px-4 py-2 rounded-full shadow-lg z-50 transition-all duration-500 ${
+    showButtons ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
+  } md:hidden`}
+>
+  <a
+    href="https://wa.me/13050000000"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-2xl text-white p-2 rounded-full hover:bg-green-500 hover:scale-110 transition-transform duration-300 shadow-md"
+  >
+    <FaWhatsapp />
+  </a>
+  <a
+    href="mailto:contact@flashipping.com"
+    className="text-2xl text-white p-2 rounded-full hover:bg-yellow-500 hover:scale-110 transition-transform duration-300 shadow-md"
+  >
+    <FaEnvelope />
+  </a>
+  <a
+    href="https://instagram.com/flashipping"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-2xl text-white p-2 rounded-full hover:bg-pink-500 hover:scale-110 transition-transform duration-300 shadow-md"
+  >
+    <FaInstagram />
+  </a>
+</div>
         </div>
 
         {/* Mobile: addresses below buttons */}
