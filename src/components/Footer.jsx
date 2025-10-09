@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaWhatsapp, FaEnvelope, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
+  const [showButtons, setShowButtons] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 100) setShowButtons(true);
+      else setShowButtons(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <footer className="bg-blue-900 text-white mt-20">
+    <footer className="bg-blue-900 text-white mt-10 md:mt-20">
       <div className="max-w-6xl mx-auto px-6 py-6">
         {/* Desktop: grid 3 kolòn */}
         <div className="hidden md:grid md:grid-cols-3 gap-8">
@@ -33,23 +44,37 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Mobile: icons + adrès */}
-        <div className="md:hidden flex flex-col items-center space-y-3">
-          <div className="flex justify-around w-full max-w-xs">
-            <a href="https://wa.me/13050000000" target="_blank" rel="noopener noreferrer" className="text-2xl">
-              <FaWhatsapp />
-            </a>
-            <a href="mailto:contact@flashipping.com" className="text-2xl">
-              <FaEnvelope />
-            </a>
-            <a href="https://instagram.com/flashipping" target="_blank" rel="noopener noreferrer" className="text-2xl">
-              <FaInstagram />
-            </a>
-          </div>
-          <div className="text-center text-sm">
-            <p>📍 Miami, FL, USA</p>
-            <p>📍 Cap-Haïtien, Haïti</p>
-          </div>
+        {/* Mobile: sticky buttons */}
+        <div
+          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-4 bg-blue-800 px-4 py-2 rounded-full shadow-lg z-50 transition-all duration-500 ${
+            showButtons ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
+          } md:hidden`}
+        >
+          <a
+            href="https://wa.me/13050000000"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-2xl text-white"
+          >
+            <FaWhatsapp />
+          </a>
+          <a href="mailto:contact@flashipping.com" className="text-2xl text-white">
+            <FaEnvelope />
+          </a>
+          <a
+            href="https://instagram.com/flashipping"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-2xl text-white"
+          >
+            <FaInstagram />
+          </a>
+        </div>
+
+        {/* Mobile: addresses below buttons */}
+        <div className="md:hidden text-center mt-2 text-sm text-gray-200">
+          <p>📍 Miami, FL, USA</p>
+          <p>📍 Cap-Haïtien, Haïti</p>
         </div>
       </div>
 
