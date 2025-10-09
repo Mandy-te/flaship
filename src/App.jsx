@@ -8,6 +8,7 @@ import Calculator from "./pages/Calculator";
 import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
+import Tracking from "./pages/Tracking";
 
 import { UserProvider } from "./context/UserContext";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -21,6 +22,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Accueil />} />
             <Route path="/calculator" element={<Calculator />} />
+            <Route path="/tracking" element={<Tracking />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route
