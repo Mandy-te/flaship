@@ -76,29 +76,31 @@ const Navbar = () => {
             <button onClick={() => handleScroll("tarifs")}>Tarifs</button>
             <button onClick={() => handleScroll("contact")}>Contact</button>
             <Link to="/calculator" onClick={() => setOpen(false)}>Calculateur</Link>
-            <div className="pt-3 border-t border-gray-200 space-y-2">
-              <Link
-                to="/login"
-                onClick={() => setOpen(false)}
-                className="w-full border border-blue-700 text-blue-700 py-2 rounded-lg hover:bg-blue-700 hover:text-white transition"
-              >
-                Login
-              </Link>
-              <Link
-                to="/sign-in"
-                onClick={() => setOpen(false)}
-                className="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition"
-              >
-                Signin
-              </Link>
-              <Link
-                to="/dashboard"
-                onClick={() => setOpen(false)}
-                className="w-full text-blue-700 hover:text-blue-800"
-              >
-                Dashboard
-              </Link>
-            </div>
+            <div className="pt-3 border-t border-gray-200 flex flex-col space-y-3 sm:space-y-2">
+  <Link
+    to="/login"
+    onClick={() => setOpen(false)}
+    className="w-full border border-blue-700 text-blue-700 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 hover:text-white transition-all duration-300"
+  >
+    Login
+  </Link>
+
+  <Link
+    to="/sign-in"
+    onClick={() => setOpen(false)}
+    className="w-full bg-blue-700 text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-800 transition-all duration-300"
+  >
+    Signin
+  </Link>
+
+  <Link
+    to="/dashboard"
+    onClick={() => setOpen(false)}
+    className="w-full text-blue-700 py-2 rounded-lg text-sm font-medium hover:text-blue-800 transition-all duration-300 border border-transparent hover:border-blue-200"
+  >
+    Dashboard
+  </Link>
+</div>
           </nav>
         </div>
       )}
