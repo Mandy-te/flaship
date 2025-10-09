@@ -1,17 +1,56 @@
-export default function Login() {
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+
+const Login = () => {
+  const { login } = useUser();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Similasyon login
+    if (email && password) {
+      login(email);
+      navigate("/dashboard");
+    } else {
+      alert("Antre email ak modpas ou!");
+    }
+  };
+
   return (
-    <section className="max-w-md mx-auto p-6 border rounded-lg shadow">
-      <h2 className="text-2xl font-semibold mb-4">Connexion 🔐</h2>
-      <form>
-        <label className="block mb-2">Adresse e-mail</label>
-        <input type="email" className="border rounded p-2 w-full mb-4" placeholder="exemple@mail.com" />
-        <label className="block mb-2">Mot de passe</label>
-        <input type="password" className="border rounded p-2 w-full mb-6" placeholder="********" />
-        <button className="bg-blue-600 text-white px-4 py-2 rounded w-full">Se connecter</button>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-8 shadow-md rounded-lg w-80 space-y-4"
+      >
+        <h2 className="text-2xl font-bold text-center text-blue-700">
+          Connexion
+        </h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="border w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="border w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          type="submit"
+          className="bg-blue-700 text-white w-full py-2 rounded-lg hover:bg-blue-800 transition"
+        >
+          Se connecter
+        </button>
       </form>
-      <p className="text-center mt-4">
-        Pas encore inscrit ? <a href="/sign-in" className="text-blue-600 underline">Créer un compte</a>
-      </p>
-    </section>
+    </div>
   );
-}
+};
+
+export default Login;
