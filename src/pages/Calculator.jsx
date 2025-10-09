@@ -46,10 +46,10 @@ export default function Calculator() {
   return (
     <section className="p-6 flex justify-center">
       <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-3xl font-bold mb-4 text-center text-blue-700">
+        <h2 className="text-3xl font-bold mb-4 text-center text-blue-700 pt-20">
           Calculateur de tarifs 📦
         </h2>
-        <p className="text-gray-600 mb-6 text-center pt-20">
+        <p className="text-gray-600 mb-6 text-center">
           Estimez le coût de votre expédition selon le poids et la valeur du marchand.
         </p>
 
