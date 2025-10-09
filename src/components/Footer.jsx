@@ -73,7 +73,6 @@ const Footer = () => {
     <FaInstagram />
   </a>
 </div>
-        </div>
 
         {/* Mobile: addresses below buttons */}
         <div className="md:hidden text-center mt-2 text-sm text-gray-200">
