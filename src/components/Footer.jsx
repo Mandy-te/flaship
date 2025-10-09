@@ -51,7 +51,7 @@ const Footer = () => {
   } md:hidden`}
 >
   <a
-    href="https://wa.me/50943314028"
+    href="https://wa.me/50943314028?text=Bonjour%20Flashipping,%20je%20veux%20suivre%20mon%20colis."
     target="_blank"
     rel="noopener noreferrer"
     className="text-2xl text-white p-2 rounded-full hover:bg-green-500 hover:scale-110 transition-transform duration-300 shadow-md"
