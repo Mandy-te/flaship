@@ -1,11 +1,14 @@
-import { createContext, useContext, useState } from "react";
+// src/context/UserContext.js
+import React, { createContext, useContext, useState } from "react";
 
+// Kreye context la
 const UserContext = createContext();
 
+// Provider
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (userData) => setUser(userData);
+  const login = (username) => setUser(username);
   const logout = () => setUser(null);
 
   return (
@@ -15,4 +18,5 @@ export const UserProvider = ({ children }) => {
   );
 };
 
+// Hook pou konsome context la
 export const useUser = () => useContext(UserContext);
