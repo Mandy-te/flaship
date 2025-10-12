@@ -1,16 +1,11 @@
 import { createContext, useContext, useState } from "react";
 
-// Kreye Context
 const UserContext = createContext();
 
-// Hook pou itilize UserContext fasil
-export const useUser = () => useContext(UserContext);
-
-// Provider pou anvlòp app lan
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (email) => setUser({ email });
+  const login = (userData) => setUser(userData);
   const logout = () => setUser(null);
 
   return (
@@ -19,3 +14,5 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export const useUser = () => useContext(UserContext);
