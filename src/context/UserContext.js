@@ -1,11 +1,11 @@
 // src/context/UserContext.js
 import React, { createContext, useContext, useState } from "react";
 
-// Kreye context la
 const UserContext = createContext();
 
-// Provider
-export const UserProvider = ({ children }) => {
+export const useUser = () => useContext(UserContext);
+
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   const login = (username) => setUser(username);
@@ -16,7 +16,4 @@ export const UserProvider = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
-};
-
-// Hook pou konsome context la
-export const useUser = () => useContext(UserContext);
+}
