@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_URL = "https://flaship-backend.onrender.com"; // URL backend Render
+const BACKEND_URL = "https://flashipping-backend.onrender.com"; // URL backend Render
 
 const api = axios.create({
   baseURL: BACKEND_URL,
