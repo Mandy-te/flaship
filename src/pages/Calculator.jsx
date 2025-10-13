@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import api from "../api"; // si ou ta vle backend pou kalkilatris pita
 
 export default function Calculator() {
   const [poids, setPoids] = useState("");
