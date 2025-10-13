@@ -1,30 +1,27 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import axios from "axios";
+import API from "../api";
 
 const Login = () => {
   const { login } = useUser();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    if (!email || !password) {
+      alert("Antre email ak modpas ou!");
+      return;
+    }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
-
-      // estoke user + token nan context
-      login({ email, token: res.data.token });
+      const res = await API.post("/api/login", { email, password });
+      login(res.data.user); // sipoze backend voye { user: "username" }
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.error || "Erreur serveur");
+      alert(err.response?.data?.error || "Erreur login");
     }
   };
 
@@ -32,7 +29,6 @@ const Login = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <form onSubmit={handleLogin} className="bg-white p-8 shadow-md rounded-lg w-80 space-y-4">
         <h2 className="text-2xl font-bold text-center text-blue-700">Connexion</h2>
-        {error && <p className="text-red-500 text-center">{error}</p>}
         <input
           type="email"
           placeholder="Email"
