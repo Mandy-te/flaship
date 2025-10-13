@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../api"; // itilize instance global
 
 export default function Tracking() {
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -8,12 +8,14 @@ export default function Tracking() {
   const [error, setError] = useState("");
 
   const handleTrack = async () => {
+    if (!trackingNumber.trim()) return;
+
     setLoading(true);
     setError("");
     setTrackingData(null);
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/tracking/${trackingNumber.trim()}`);
+      const res = await API.get(`/api/tracking/${trackingNumber.trim()}`);
       setTrackingData(res.data);
     } catch (err) {
       setError(err.response?.data?.error || "Erreur serveur");
