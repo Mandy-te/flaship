@@ -1,7 +1,11 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + "/api",
+// Ou ka mete lyen Render backend ou la
+const API = axios.create({
+  baseURL: "https://flashipping-backend.onrender.com",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-export default api;
+export default API;
