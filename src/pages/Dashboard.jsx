@@ -6,24 +6,22 @@ export default function Dashboard() {
   const { user, logout } = useUser();
   const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [newShipment, setNewShipment] = useState({
+    trackingNumber: "",
     items: "",
     tariff: "",
-    receipt: null, // pou imaj reçu
+    receipt: null,
   });
 
   // Ranmase lis koli itilizatè a
   const fetchShipments = async () => {
-    if (!user?.email) return;
+    if (!user) return;
     try {
       setLoading(true);
       const res = await API.get(`/api/shipments?email=${user.email}`);
       setShipments(res.data.shipments || []);
-      setError(null);
     } catch (err) {
-      console.warn("Erreur fetch shipments:", err.response?.data?.error || err.message);
-      setError(err.response?.data?.error || "Erreur fetch shipments");
+      alert("Erreur fetch shipments: " + (err.response?.data?.error || err.message));
     } finally {
       setLoading(false);
     }
@@ -36,16 +34,17 @@ export default function Dashboard() {
   // Pre-alerte nouvo koli
   const handleAddShipment = async (e) => {
     e.preventDefault();
-    if (!newShipment.items || !newShipment.receipt) {
-      alert("Antre tout enfòmasyon pou koli a epi upload reçu!");
+    if (!newShipment.trackingNumber || !newShipment.items || !newShipment.receipt) {
+      alert("Antre Tracking Number, Atik, ak Upload reçu!");
       return;
     }
 
     try {
       const formData = new FormData();
       formData.append("email", user.email);
+      formData.append("trackingNumber", newShipment.trackingNumber);
       formData.append("items", newShipment.items);
-      if (newShipment.tariff) formData.append("tariff", newShipment.tariff);
+      formData.append("tariff", newShipment.tariff);
       formData.append("receipt", newShipment.receipt);
 
       await API.post("/api/shipments", formData, {
@@ -53,14 +52,16 @@ export default function Dashboard() {
       });
 
       alert("Nouvo koli pre-alerte avèk siksè!");
-      setNewShipment({ items: "", tariff: "", receipt: null });
-      fetchShipments();
+      setNewShipment({ trackingNumber: "", items: "", tariff: "", receipt: null });
+      fetchShipments(); // rafrechi lis koli yo
     } catch (err) {
       alert("Erreur ajoute koli: " + (err.response?.data?.error || err.message));
     }
   };
 
-  if (!user) return <p>Ou bezwen konekte pou wè dashboard la.</p>;
+  if (!user) {
+    return <p>Ou bezwen konekte pou wè dashboard la.</p>;
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -74,8 +75,6 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {error && <p className="text-red-600 mb-4">{error}</p>}
-
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Liste des colis</h2>
         {loading ? (
@@ -86,7 +85,8 @@ export default function Dashboard() {
           <table className="w-full border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border px-3 py-2">Koli ID</th>
+                <th className="border px-3 py-2">Tracking Number</th>
+                <th className="border px-3 py-2">Pwa</th>
                 <th className="border px-3 py-2">Atik</th>
                 <th className="border px-3 py-2">Statut</th>
                 <th className="border px-3 py-2">Denye Dat</th>
@@ -96,7 +96,8 @@ export default function Dashboard() {
             <tbody>
               {shipments.map((s) => (
                 <tr key={s._id}>
-                  <td className="border px-3 py-2">{s._id}</td>
+                  <td className="border px-3 py-2">{s.trackingNumber}</td>
+                  <td className="border px-3 py-2">{s.weight || "-"}</td>
                   <td className="border px-3 py-2">{s.items}</td>
                   <td className="border px-3 py-2">{s.status || "En attente"}</td>
                   <td className="border px-3 py-2">{new Date(s.updatedAt).toLocaleDateString()}</td>
@@ -111,6 +112,13 @@ export default function Dashboard() {
       <section>
         <h2 className="text-xl font-semibold mb-2">Pré-alerte d'un nouveau colis</h2>
         <form onSubmit={handleAddShipment} className="space-y-4 max-w-md">
+          <input
+            type="text"
+            placeholder="Tracking Number"
+            value={newShipment.trackingNumber}
+            onChange={(e) => setNewShipment({ ...newShipment, trackingNumber: e.target.value })}
+            className="border rounded p-2 w-full"
+          />
           <input
             type="text"
             placeholder="Atik"
