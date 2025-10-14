@@ -6,22 +6,24 @@ export default function Dashboard() {
   const { user, logout } = useUser();
   const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [newShipment, setNewShipment] = useState({
-    weight: "",
     items: "",
     tariff: "",
-    receipt: null, // nouvo chan pou upload
+    receipt: null, // pou imaj reçu
   });
 
   // Ranmase lis koli itilizatè a
   const fetchShipments = async () => {
-    if (!user) return;
+    if (!user?.email) return;
     try {
       setLoading(true);
       const res = await API.get(`/api/shipments?email=${user.email}`);
       setShipments(res.data.shipments || []);
+      setError(null);
     } catch (err) {
-      alert("Erreur fetch shipments: " + (err.response?.data?.error || err.message));
+      console.warn("Erreur fetch shipments:", err.response?.data?.error || err.message);
+      setError(err.response?.data?.error || "Erreur fetch shipments");
     } finally {
       setLoading(false);
     }
@@ -31,37 +33,34 @@ export default function Dashboard() {
     fetchShipments();
   }, [user]);
 
-  // Pre-alerte nouvo koli ak upload reçu
+  // Pre-alerte nouvo koli
   const handleAddShipment = async (e) => {
     e.preventDefault();
-    if (!newShipment.items) {
-      alert("Antre atik yo!");
+    if (!newShipment.items || !newShipment.receipt) {
+      alert("Antre tout enfòmasyon pou koli a epi upload reçu!");
       return;
     }
 
     try {
       const formData = new FormData();
       formData.append("email", user.email);
-      formData.append("weight", newShipment.weight || "");
       formData.append("items", newShipment.items);
-      formData.append("tariff", newShipment.tariff || "");
-      if (newShipment.receipt) formData.append("receipt", newShipment.receipt);
+      if (newShipment.tariff) formData.append("tariff", newShipment.tariff);
+      formData.append("receipt", newShipment.receipt);
 
-      const res = await API.post("/api/shipments", formData, {
+      await API.post("/api/shipments", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      alert(res.data.message);
-      setNewShipment({ weight: "", items: "", tariff: "", receipt: null });
+      alert("Nouvo koli pre-alerte avèk siksè!");
+      setNewShipment({ items: "", tariff: "", receipt: null });
       fetchShipments();
     } catch (err) {
       alert("Erreur ajoute koli: " + (err.response?.data?.error || err.message));
     }
   };
 
-  if (!user) {
-    return <p>Ou bezwen konekte pou wè dashboard la.</p>;
-  }
+  if (!user) return <p>Ou bezwen konekte pou wè dashboard la.</p>;
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -75,6 +74,8 @@ export default function Dashboard() {
         </button>
       </div>
 
+      {error && <p className="text-red-600 mb-4">{error}</p>}
+
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Liste des colis</h2>
         {loading ? (
@@ -86,32 +87,20 @@ export default function Dashboard() {
             <thead>
               <tr className="bg-gray-100">
                 <th className="border px-3 py-2">Koli ID</th>
-                <th className="border px-3 py-2">Pwa</th>
                 <th className="border px-3 py-2">Atik</th>
                 <th className="border px-3 py-2">Statut</th>
                 <th className="border px-3 py-2">Denye Dat</th>
                 <th className="border px-3 py-2">Tarif</th>
-                <th className="border px-3 py-2">Reçu</th>
               </tr>
             </thead>
             <tbody>
               {shipments.map((s) => (
                 <tr key={s._id}>
                   <td className="border px-3 py-2">{s._id}</td>
-                  <td className="border px-3 py-2">{s.weight || "-"}</td>
                   <td className="border px-3 py-2">{s.items}</td>
                   <td className="border px-3 py-2">{s.status || "En attente"}</td>
                   <td className="border px-3 py-2">{new Date(s.updatedAt).toLocaleDateString()}</td>
                   <td className="border px-3 py-2">{s.tariff || "-"}</td>
-                  <td className="border px-3 py-2">
-                    {s.receiptUrl ? (
-                      <a href={s.receiptUrl} target="_blank" rel="noopener noreferrer">
-                        Voir reçu
-                      </a>
-                    ) : (
-                      "-"
-                    )}
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -127,14 +116,6 @@ export default function Dashboard() {
             placeholder="Atik"
             value={newShipment.items}
             onChange={(e) => setNewShipment({ ...newShipment, items: e.target.value })}
-            className="border rounded p-2 w-full"
-            required
-          />
-          <input
-            type="text"
-            placeholder="Pwa (opsyonèl)"
-            value={newShipment.weight}
-            onChange={(e) => setNewShipment({ ...newShipment, weight: e.target.value })}
             className="border rounded p-2 w-full"
           />
           <input
