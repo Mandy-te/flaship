@@ -18,7 +18,8 @@ const Login = () => {
 
     try {
       const res = await API.post("/api/login", { email, password });
-      login(res.data.user || email); // si backend voye user, sinon mete email
+      // backend dwe voye objè itilizatè: { name, email, trackings }
+      login(res.data.user); 
       navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.error || "Erreur login");
