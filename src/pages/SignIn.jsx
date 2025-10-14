@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import API from "../api";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { login } = useUser();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +21,11 @@ export default function SignIn() {
     try {
       const res = await API.post("/api/signup", { name, email, password });
       alert(res.data.message || "Kreyasyon kont reussi!");
-      navigate("/login");
+      
+      // Mete itilizatè nan konteks imedyatman
+      login({ name, email }); 
+      
+      navigate("/dashboard"); // Dirije itilizatè dirèkteman nan Dashboard
     } catch (err) {
       alert(err.response?.data?.error || "Erreur inscription");
     }
@@ -61,7 +67,9 @@ export default function SignIn() {
           className="border rounded p-2 w-full mb-6"
           placeholder="********"
         />
-        <button className="bg-green-600 text-white px-4 py-2 rounded w-full">S’inscrire</button>
+        <button className="bg-green-600 text-white px-4 py-2 rounded w-full">
+          S’inscrire
+        </button>
       </form>
     </section>
   );
