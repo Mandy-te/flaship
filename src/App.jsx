@@ -13,7 +13,7 @@ import { UserProvider } from "./context/UserContext";
 import { AdminProvider } from "./context/AdminContext"; // ✅ Nou ajoute kontex admin nan
 
 import PrivateRoute from "./routes/PrivateRoute";
-import PrivateAdminRoute from "./components/PrivateAdminRoute";
+import PrivateAdminRoute from "./routes/PrivateAdminRoute";
 
 export default function App() {
   return (
