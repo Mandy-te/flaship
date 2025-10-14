@@ -1,13 +1,7 @@
 import axios from "axios";
 
-const BACKEND_URL = "https://flashipping-backend.onrender.com"; // URL backend Render
-
 const api = axios.create({
-  baseURL: BACKEND_URL,
-  timeout: 5000,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL: import.meta.env.VITE_API_URL + "/api",
 });
 
 export default api;
