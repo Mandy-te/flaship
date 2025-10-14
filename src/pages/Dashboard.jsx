@@ -7,8 +7,8 @@ export default function Dashboard() {
   const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newShipment, setNewShipment] = useState({
-    weight: "",
-    items: "",
+    customerName: user?.name || "",
+    items: [{ name: "", quantity: 1, value: "", receiptUrl: "" }],
     tariff: "",
   });
 
@@ -30,33 +30,45 @@ export default function Dashboard() {
     fetchShipments();
   }, [user]);
 
-  // Pre-alerte nouvo koli
+  // Handlers pou pre-alerte
+  const handleItemChange = (index, field, value) => {
+    const newItems = [...newShipment.items];
+    newItems[index][field] = value;
+    setNewShipment({ ...newShipment, items: newItems });
+  };
+
+  const handleAddItem = () => {
+    setNewShipment({
+      ...newShipment,
+      items: [...newShipment.items, { name: "", quantity: 1, value: "", receiptUrl: "" }],
+    });
+  };
+
   const handleAddShipment = async (e) => {
     e.preventDefault();
-    if (!newShipment.weight || !newShipment.items) {
-      alert("Antre tout enfòmasyon pou koli a!");
-      return;
+
+    // Validasyon
+    for (const item of newShipment.items) {
+      if (!item.name || !item.quantity || !item.value || !item.receiptUrl) {
+        alert("Tout chan pou chak atik obligatwa!");
+        return;
+      }
     }
 
     try {
-      await API.post("/api/shipments", {
-        email: user.email,
-        ...newShipment,
-      });
-      alert("Nouvo koli pre-alerte avèk siksè!");
-      setNewShipment({ weight: "", items: "", tariff: "" });
-      fetchShipments(); // rafrechi lis koli yo
+      await API.post("/api/shipments", { customerName: user.name || user.email, items: newShipment.items, tariff: newShipment.tariff });
+      alert("Pre-alerte voye avèk siksè!");
+      setNewShipment({ customerName: user.name || user.email, items: [{ name: "", quantity: 1, value: "", receiptUrl: "" }], tariff: "" });
+      fetchShipments();
     } catch (err) {
-      alert("Erreur ajoute koli: " + (err.response?.data?.error || err.message));
+      alert("Erreur pandan pre-alerte: " + (err.response?.data?.error || err.message));
     }
   };
 
-  if (!user) {
-    return <p>Ou bezwen konekte pou wè dashboard la.</p>;
-  }
+  if (!user) return <p>Ou bezwen konekte pou wè dashboard la.</p>;
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Dashboard de {user.name || user.email}</h1>
         <button
@@ -67,6 +79,7 @@ export default function Dashboard() {
         </button>
       </div>
 
+      {/* Lis koli */}
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2">Liste des colis</h2>
         {loading ? (
@@ -78,7 +91,7 @@ export default function Dashboard() {
             <thead>
               <tr className="bg-gray-100">
                 <th className="border px-3 py-2">Koli ID</th>
-                <th className="border px-3 py-2">Pwa</th>
+                <th className="border px-3 py-2">Pwa (admin ajoute)</th>
                 <th className="border px-3 py-2">Atik</th>
                 <th className="border px-3 py-2">Statut</th>
                 <th className="border px-3 py-2">Denye Dat</th>
@@ -89,8 +102,12 @@ export default function Dashboard() {
               {shipments.map((s) => (
                 <tr key={s._id}>
                   <td className="border px-3 py-2">{s._id}</td>
-                  <td className="border px-3 py-2">{s.weight}</td>
-                  <td className="border px-3 py-2">{s.items}</td>
+                  <td className="border px-3 py-2">{s.weight || "-"}</td>
+                  <td className="border px-3 py-2">
+                    {s.items.map((i, idx) => (
+                      <div key={idx}>{`${i.name} x${i.quantity} (${i.value} HTG)`}</div>
+                    ))}
+                  </td>
                   <td className="border px-3 py-2">{s.status || "En attente"}</td>
                   <td className="border px-3 py-2">{new Date(s.updatedAt).toLocaleDateString()}</td>
                   <td className="border px-3 py-2">{s.tariff || "-"}</td>
@@ -101,23 +118,49 @@ export default function Dashboard() {
         )}
       </section>
 
+      {/* Pre-alerte fòm */}
       <section>
         <h2 className="text-xl font-semibold mb-2">Pré-alerte d'un nouveau colis</h2>
         <form onSubmit={handleAddShipment} className="space-y-4 max-w-md">
-          <input
-            type="text"
-            placeholder="Pwa (kg)"
-            value={newShipment.weight}
-            onChange={(e) => setNewShipment({ ...newShipment, weight: e.target.value })}
-            className="border rounded p-2 w-full"
-          />
-          <input
-            type="text"
-            placeholder="Atik"
-            value={newShipment.items}
-            onChange={(e) => setNewShipment({ ...newShipment, items: e.target.value })}
-            className="border rounded p-2 w-full"
-          />
+          {newShipment.items.map((item, idx) => (
+            <div key={idx} className="space-y-2 border p-2 rounded">
+              <input
+                type="text"
+                placeholder="Nom atik"
+                value={item.name}
+                onChange={(e) => handleItemChange(idx, "name", e.target.value)}
+                className="border w-full p-2 rounded"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Kantite"
+                value={item.quantity}
+                onChange={(e) => handleItemChange(idx, "quantity", e.target.value)}
+                className="border w-full p-2 rounded"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Valè machandiz"
+                value={item.value}
+                onChange={(e) => handleItemChange(idx, "value", e.target.value)}
+                className="border w-full p-2 rounded"
+                required
+              />
+              <input
+                type="text"
+                placeholder="Lien reçip / prèv acha"
+                value={item.receiptUrl}
+                onChange={(e) => handleItemChange(idx, "receiptUrl", e.target.value)}
+                className="border w-full p-2 rounded"
+                required
+              />
+            </div>
+          ))}
+          <button type="button" onClick={handleAddItem} className="bg-yellow-500 px-4 py-2 rounded text-white">
+            Ajoute atik
+          </button>
           <input
             type="text"
             placeholder="Tarif (opsyonèl)"
@@ -125,8 +168,8 @@ export default function Dashboard() {
             onChange={(e) => setNewShipment({ ...newShipment, tariff: e.target.value })}
             className="border rounded p-2 w-full"
           />
-          <button className="bg-blue-700 text-white px-4 py-2 rounded w-full hover:bg-blue-800">
-            Ajouter pré-alerte
+          <button type="submit" className="bg-green-600 px-4 py-2 rounded w-full text-white hover:bg-green-700">
+            Voye pré-alerte
           </button>
         </form>
       </section>
