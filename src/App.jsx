@@ -8,6 +8,8 @@ import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import { UserProvider } from "./context/UserContext";
 import PrivateRoute from "./routes/PrivateRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import PrivateAdminRoute from "./components/PrivateAdminRoute";
 
 export default function App() {
   return (
@@ -28,6 +30,14 @@ export default function App() {
                 </PrivateRoute>
               }
             />
+            <Route
+              path="/admin"
+              element={
+                <PrivateAdminRoute>
+                  <AdminDashboard />
+                </PrivateAdminRoute>
+              }
+              />
           </Routes>
         </main>
         <Footer />
