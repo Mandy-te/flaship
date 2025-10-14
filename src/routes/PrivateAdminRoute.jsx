@@ -1,12 +1,14 @@
 import { Navigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useAdmin } from "../context/AdminContext";
 
 export default function PrivateAdminRoute({ children }) {
-  const { user } = useUser();
+  const { admin, token } = useAdmin();
 
-  if (!user || user.role !== "admin") {
-    return <Navigate to="/login" replace />;
+  // Si pa gen admin konekte oswa token pa valide → redireksyon
+  if (!admin || !token) {
+    return <Navigate to="/admin/login" replace />;
   }
 
+  // Sinon, montre paj admin nan
   return children;
 }
