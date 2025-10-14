@@ -6,9 +6,9 @@ const UserContext = createContext();
 export const useUser = () => useContext(UserContext);
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); // ka gen { name, email, trackings }
 
-  const login = (username) => setUser(username);
+  const login = (userData) => setUser(userData); // backend dwe voye objè user konplè
   const logout = () => setUser(null);
 
   return (
