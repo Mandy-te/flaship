@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import API from "../api";
+import API from "../api"; // instance axios global
 
 const Login = () => {
   const { login } = useUser();
@@ -17,8 +17,12 @@ const Login = () => {
     }
 
     try {
+      // voye request nan backend via API global
       const res = await API.post("/api/login", { email, password });
-      login(res.data.user); // sipoze backend voye { user: "username" }
+
+      // login nan UserContext
+      login(res.data.user || res.data.name || "Utilisateur"); 
+      
       navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.error || "Erreur login");

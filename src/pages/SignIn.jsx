@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import API from "../api";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { login } = useUser(); // pou login otomatik apre signup
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,9 +19,12 @@ export default function SignIn() {
     }
 
     try {
-      await API.post("/api/signup", { name, email, password });
+      const res = await API.post("/api/signup", { name, email, password });
       alert("Kreyasyon kont reussi!");
-      navigate("/login");
+
+      // Login otomatik
+      login(name); // ou ka chanje pou res.data.user si backend voye user object
+      navigate("/dashboard");
     } catch (err) {
       alert(err.response?.data?.error || "Erreur inscription");
     }
