@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api";
 
-export default function AdminLogin() {
+const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -10,68 +10,70 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
+    if (!email || !password) {
+      alert("Tanpri ranpli tout chan yo !");
+      return;
+    }
 
     try {
+      setLoading(true);
       const res = await API.post("/api/admin/login", { email, password });
 
-      const user = res.data.user;
-      const token = res.data.token;
-
-      if (!user || user.role !== "admin") {
+      if (res.data?.user?.role !== "admin") {
         alert("Accès refusé ❌ — ou pa gen privilèj admin!");
-        setLoading(false);
         return;
       }
 
-      // ✅ Save admin token & data nan localStorage
-      localStorage.setItem("adminToken", token);
-      localStorage.setItem("adminData", JSON.stringify(user));
+      // ✅ Sove token & role
+      localStorage.setItem("adminToken", res.data.token);
+      localStorage.setItem("role", res.data.user.role);
+      localStorage.setItem("adminData", JSON.stringify(res.data.user));
 
-      // Redireksyon nan Dashboard Admin
+      alert("Connexion réussie ✅");
       navigate("/admin/dashboard");
     } catch (err) {
       console.error("Erreur login admin:", err);
-      alert(err.response?.data?.error || "Erreur serveur");
+      alert(err.response?.data?.error || "Erreur de connexion au serveur");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form 
-        onSubmit={handleSubmit} 
-        className="bg-white p-8 rounded shadow-md w-full max-w-md"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">Admin Login</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+          🔐 Connexion Admin
+        </h2>
 
-        <label className="block mb-2">Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email admin"
+            className="w-full border rounded-lg px-4 py-2"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            className="w-full border rounded-lg px-4 py-2"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <label className="block mb-2">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="w-full p-2 border border-gray-300 rounded mb-6"
-        />
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-700 text-white p-2 rounded hover:bg-blue-800 transition"
-        >
-          {loading ? "Connexion..." : "Se connecter"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white rounded-lg py-2 font-semibold hover:bg-blue-700 transition"
+          >
+            {loading ? "Connexion..." : "Se connecter"}
+          </button>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default AdminLogin;
