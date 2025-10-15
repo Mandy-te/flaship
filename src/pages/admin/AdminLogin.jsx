@@ -21,19 +21,15 @@ export default function AdminLogin() {
       setLoading(true);
       const res = await API.post("/api/admin/login", { email, password });
 
-      // ✅ Tcheke si role admin la prezan
-      if (res.data?.user?.role !== "admin") {
-        alert("Accès refusé ❌ — ou pa gen privilèj admin!");
-        return;
-      }
+      // Mete token ak adminData nan localStorage
+      localStorage.setItem("adminToken", res.data.token);
+      localStorage.setItem("adminData", JSON.stringify(res.data.user));
 
-      // Sove token ak done admin nan context + localStorage
+      // Mete nan AdminContext
       loginAdmin(res.data.user, res.data.token);
 
-      alert(res.data.message || "Login admin reussi ✅");
       navigate("/admin/dashboard");
     } catch (err) {
-      console.error(err);
       alert(err.response?.data?.error || "Erreur login admin");
     } finally {
       setLoading(false);
@@ -42,12 +38,8 @@ export default function AdminLogin() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-8 shadow-md rounded w-96 space-y-4"
-      >
+      <form onSubmit={handleLogin} className="bg-white p-8 shadow-md rounded w-96 space-y-4">
         <h2 className="text-2xl font-bold text-center text-red-700">Admin Login</h2>
-
         <input
           type="email"
           placeholder="Email"
@@ -55,7 +47,6 @@ export default function AdminLogin() {
           onChange={(e) => setEmail(e.target.value)}
           className="border w-full px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
         />
-
         <input
           type="password"
           placeholder="Mot de passe"
@@ -63,13 +54,9 @@ export default function AdminLogin() {
           onChange={(e) => setPassword(e.target.value)}
           className="border w-full px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
         />
-
         <button
           type="submit"
-          className={`bg-red-700 text-white w-full py-2 rounded hover:bg-red-800 transition ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={loading}
+          className="bg-red-700 text-white w-full py-2 rounded hover:bg-red-800 transition"
         >
           {loading ? "Connexion..." : "Connecter"}
         </button>
