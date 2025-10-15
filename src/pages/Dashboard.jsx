@@ -7,9 +7,10 @@ export default function Dashboard() {
   const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newShipment, setNewShipment] = useState({
-    trackingNumber: "",
+    weight: "",
     items: "",
     tariff: "",
+    trackingNumber: "",
     receipt: null,
   });
 
@@ -35,24 +36,20 @@ export default function Dashboard() {
   const handleAddShipment = async (e) => {
     e.preventDefault();
     if (!newShipment.trackingNumber || !newShipment.items || !newShipment.receipt) {
-      alert("Antre Tracking Number, Atik, ak Upload reçu!");
+      alert("Antre tout enfòmasyon obligatwa pou koli a!");
       return;
     }
 
     try {
       const formData = new FormData();
-      formData.append("email", user.email);
-      formData.append("trackingNumber", newShipment.trackingNumber);
-      formData.append("items", newShipment.items);
-      formData.append("tariff", newShipment.tariff);
-      formData.append("receipt", newShipment.receipt);
+      Object.keys(newShipment).forEach(key => formData.append(key, newShipment[key]));
 
       await API.post("/api/shipments", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       alert("Nouvo koli pre-alerte avèk siksè!");
-      setNewShipment({ trackingNumber: "", items: "", tariff: "", receipt: null });
+      setNewShipment({ weight: "", items: "", tariff: "", trackingNumber: "", receipt: null });
       fetchShipments(); // rafrechi lis koli yo
     } catch (err) {
       alert("Erreur ajoute koli: " + (err.response?.data?.error || err.message));
@@ -85,7 +82,7 @@ export default function Dashboard() {
           <table className="w-full border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border px-3 py-2">Tracking Number</th>
+                <th className="border px-3 py-2">Tracking #</th>
                 <th className="border px-3 py-2">Pwa</th>
                 <th className="border px-3 py-2">Atik</th>
                 <th className="border px-3 py-2">Statut</th>
@@ -97,7 +94,7 @@ export default function Dashboard() {
               {shipments.map((s) => (
                 <tr key={s._id}>
                   <td className="border px-3 py-2">{s.trackingNumber}</td>
-                  <td className="border px-3 py-2">{s.weight || "-"}</td>
+                  <td className="border px-3 py-2">{s.weight}</td>
                   <td className="border px-3 py-2">{s.items}</td>
                   <td className="border px-3 py-2">{s.status || "En attente"}</td>
                   <td className="border px-3 py-2">{new Date(s.updatedAt).toLocaleDateString()}</td>
@@ -117,6 +114,13 @@ export default function Dashboard() {
             placeholder="Tracking Number"
             value={newShipment.trackingNumber}
             onChange={(e) => setNewShipment({ ...newShipment, trackingNumber: e.target.value })}
+            className="border rounded p-2 w-full"
+          />
+          <input
+            type="text"
+            placeholder="Pwa (kg)"
+            value={newShipment.weight}
+            onChange={(e) => setNewShipment({ ...newShipment, weight: e.target.value })}
             className="border rounded p-2 w-full"
           />
           <input
