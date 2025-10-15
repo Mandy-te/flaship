@@ -6,7 +6,7 @@ import Calculator from "./pages/Calculator";
 import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
-import AdminLogin from "./pages/AdminLogin"; // ✅ Nou ajoute login admin nan
+import AdminLogin from "./pages/admin/AdminLogin"; // ✅ Nou ajoute login admin nan
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import { UserProvider } from "./context/UserContext";
