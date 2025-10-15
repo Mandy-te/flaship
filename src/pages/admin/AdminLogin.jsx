@@ -1,64 +1,75 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api";
-import { useAdmin } from "../../context/AdminContext";
 
 export default function AdminLogin() {
-  const { loginAdmin } = useAdmin();
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Antre email ak modpas ou!");
-      return;
-    }
+    setLoading(true);
 
     try {
-      setLoading(true);
       const res = await API.post("/api/admin/login", { email, password });
 
-      // Mete token ak adminData nan localStorage
-      localStorage.setItem("adminToken", res.data.token);
-      localStorage.setItem("adminData", JSON.stringify(res.data.user));
+      const user = res.data.user;
+      const token = res.data.token;
 
-      // Mete nan AdminContext
-      loginAdmin(res.data.user, res.data.token);
+      if (!user || user.role !== "admin") {
+        alert("Accès refusé ❌ — ou pa gen privilèj admin!");
+        setLoading(false);
+        return;
+      }
 
+      // ✅ Save admin token & data nan localStorage
+      localStorage.setItem("adminToken", token);
+      localStorage.setItem("adminData", JSON.stringify(user));
+
+      // Redireksyon nan Dashboard Admin
       navigate("/admin/dashboard");
     } catch (err) {
-      alert(err.response?.data?.error || "Erreur login admin");
+      console.error("Erreur login admin:", err);
+      alert(err.response?.data?.error || "Erreur serveur");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <form onSubmit={handleLogin} className="bg-white p-8 shadow-md rounded w-96 space-y-4">
-        <h2 className="text-2xl font-bold text-center text-red-700">Admin Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form 
+        onSubmit={handleSubmit} 
+        className="bg-white p-8 rounded shadow-md w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">Admin Login</h2>
+
+        <label className="block mb-2">Email</label>
         <input
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border w-full px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+          required
+          className="w-full p-2 border border-gray-300 rounded mb-4"
         />
+
+        <label className="block mb-2">Password</label>
         <input
           type="password"
-          placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border w-full px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+          required
+          className="w-full p-2 border border-gray-300 rounded mb-6"
         />
+
         <button
           type="submit"
-          className="bg-red-700 text-white w-full py-2 rounded hover:bg-red-800 transition"
+          disabled={loading}
+          className="w-full bg-blue-700 text-white p-2 rounded hover:bg-blue-800 transition"
         >
-          {loading ? "Connexion..." : "Connecter"}
+          {loading ? "Connexion..." : "Se connecter"}
         </button>
       </form>
     </div>
