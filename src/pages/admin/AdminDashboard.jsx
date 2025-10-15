@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useAdmin } from "../context/AdminContext";
-import API from "../api";
+import { useAdmin } from "../../context/AdminContext";
+import API from "../../api";
 
 export default function AdminDashboard() {
   const { admin, logoutAdmin, token } = useAdmin();
