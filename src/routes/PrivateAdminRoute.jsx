@@ -1,13 +1,15 @@
+// src/routes/PrivateAdminRoute.jsx
 import { Navigate } from "react-router-dom";
-import { useAdmin } from "../context/AdminContext";
 
-export default function PrivateAdminRoute({ children }) {
-  const { admin } = useAdmin();
-  const adminToken = localStorage.getItem("adminToken");
+const PrivateAdminRoute = ({ children }) => {
+  const token = localStorage.getItem("adminToken");
+  const role = localStorage.getItem("role");
 
-  if (!admin || !adminToken) {
+  if (!token || role !== "admin") {
     return <Navigate to="/admin/login" replace />;
   }
 
   return children;
-}
+};
+
+export default PrivateAdminRoute;
