@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api";
-import { useAdmin } from "../context/AdminContext";
+import { useAdmin } from "../../context/AdminContext";
 
 export default function AdminLogin() {
   const { loginAdmin } = useAdmin();
